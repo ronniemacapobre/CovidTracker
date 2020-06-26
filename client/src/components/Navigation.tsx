@@ -1,16 +1,20 @@
 import React from 'react';
 
-import Menu from './Menu';
-
 const Navigation: React.FC = () => {
   return (
-    <nav>
-      <header>
-        <span></span>
-        Ronnie
-        <a></a>
-      </header>
-      <Menu />
+    <nav className='admin__nav'>
+      <ul className='menu'>
+        <li className='menu__item'>
+          <a className='menu__link' href='social-interaction'>
+            Social Interaction
+          </a>
+        </li>
+        <li className='menu__item'>
+          <a className='menu__link' href='#'>
+            Place Exposure
+          </a>
+        </li>
+      </ul>
     </nav>
   );
 };
