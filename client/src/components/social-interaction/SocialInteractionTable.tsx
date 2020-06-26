@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap';
 
 const SocialInteractionTable: React.FC = () => {
   return (
-    <Table striped bordered responsive size='lg'>
+    <Table bordered responsive size='lg'>
       <thead>
         <tr>
           <th>Person</th>

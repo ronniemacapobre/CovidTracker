@@ -7,7 +7,9 @@ const Header: React.FC = () => {
       <a href='/' className='logo'>
         <h1>CETT</h1>
       </a>
-      <div className='toolbar'>COVID Exposure Tracking Tool</div>
+      <div className='toolbar'>
+        <h1>COVID Exposure Tracking Tool</h1>
+      </div>
     </header>
   );
 };
