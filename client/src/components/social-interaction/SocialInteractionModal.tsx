@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import SocialInteraction from '../../assets/models/SocialInteraction';
 
 type Props = {
   show: boolean;
   onHide: () => void;
+  onSave: (data: SocialInteraction) => void;
 };
 
 const SocialInteractionModal: React.FC<Props> = (props) => {
+  const initialSocialInteractionState = {
+    _id: 0,
+    name: '',
+    date: null,
+    hours: '',
+    isSocialDistancing: false,
+  };
+
+  const [socialInteraction, setSocialInteraction] = useState(
+    initialSocialInteractionState
+  );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+    setSocialInteraction({ ...socialInteraction, [name]: value });
+  };
+
+  const handleSave = () => {
+    props.onSave(new SocialInteraction(socialInteraction));
+  };
+
   return (
     <Modal
       {...props}
@@ -26,7 +49,11 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
               Name
             </Form.Label>
             <Col sm='10'>
-              <Form.Control type='text' />
+              <Form.Control
+                name='name'
+                type='text'
+                onChange={handleInputChange}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
@@ -34,7 +61,11 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
               Date
             </Form.Label>
             <Col sm='5'>
-              <Form.Control type='date' />
+              <Form.Control
+                name='date'
+                type='date'
+                onChange={handleInputChange}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
@@ -42,18 +73,26 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
               Hours
             </Form.Label>
             <Col sm='3'>
-              <Form.Control type='number' />
+              <Form.Control
+                name='hours'
+                type='number'
+                onChange={handleInputChange}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId='formHorizontalCheck'>
             <Col sm={{ span: 10, offset: 2 }}>
-              <Form.Check label='Is Social Distancing Observed?' />
+              <Form.Check
+                name='isSocialDistancing'
+                label='Is Social Distancing Observed?'
+                onChange={handleInputChange}
+              />
             </Col>
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => props.onHide()}>Save</Button>
+        <Button onClick={handleSave}>Save</Button>
         <Button variant='secondary' onClick={() => props.onHide()}>
           Cancel
         </Button>

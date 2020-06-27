@@ -1,20 +1,45 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Button, FormCheck, Form } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Button, FormCheck } from 'react-bootstrap';
 
 import SocialInteractionTable from './SocialInteractionTable';
 import SocialInteractionModal from './SocialInteractionModal';
+import SocialInteraction from '../../assets/models/SocialInteraction';
+import SocialInteractionService from '../services/SocialInteractionService';
 
 const SocialInteractionContainer: React.FC = () => {
+  const days: number = 14;
   const [showModal, setShowModal] = useState(false);
+  const [showAllRecords, setShowAllRecords] = useState(true);
+  const [socialInteractions, setSocialInteractions] = useState<
+    SocialInteraction[]
+  >([]);
 
   useEffect(() => {
-    const socialInteractionUrl =
-      'http://localhost:5000/api/social-interactions';
-    axios.get(socialInteractionUrl).then((data) => {
-      console.log(data);
+    getSocialInteractions();
+  }, []);
+
+  const getSocialInteractions = () => {
+    SocialInteractionService.getAll()
+      .then((response) => {
+        setSocialInteractions(
+          response.data.map((sc: any) => new SocialInteraction(sc))
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const addNewSocialInteraction = (data: SocialInteraction) => {
+    SocialInteractionService.add(data).then(() => {
+      setShowModal(false);
+      setSocialInteractions([...socialInteractions, data]);
     });
-  });
+  };
+
+  const handleShowAllRecords = () => {
+    setShowAllRecords(!showAllRecords);
+  };
 
   return (
     <div className='admin__main social-int'>
@@ -25,12 +50,21 @@ const SocialInteractionContainer: React.FC = () => {
             Add Social Interaction
           </Button>
         </div>
-        <FormCheck label='Display records within last 14 days' />
+        <FormCheck
+          label='Display records within last 14 days'
+          defaultChecked={!showAllRecords}
+          onChange={handleShowAllRecords}
+        />
       </div>
-      <SocialInteractionTable />
+      <SocialInteractionTable
+        socialInteractions={socialInteractions}
+        showAll={showAllRecords}
+        days={days}
+      />
       <SocialInteractionModal
         show={showModal}
         onHide={() => setShowModal(false)}
+        onSave={addNewSocialInteraction}
       />
     </div>
   );
