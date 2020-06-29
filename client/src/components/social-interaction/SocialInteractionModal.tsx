@@ -26,14 +26,26 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
     setSocialInteraction({ ...socialInteraction, [name]: value });
   };
 
-  const handleSave = () => {
+  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.currentTarget;
+    setSocialInteraction({ ...socialInteraction, [name]: checked });
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
     props.onSave(new SocialInteraction(socialInteraction));
   };
+
+  const isValid =
+    socialInteraction &&
+    socialInteraction.name &&
+    socialInteraction.date &&
+    socialInteraction.hours;
 
   return (
     <Modal
       {...props}
-      size='lg'
+      size='sm'
       aria-labelledby='contained-modal-title-vcenter'
       centered
     >
@@ -43,13 +55,14 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group as={Row}>
             <Form.Label column sm='2'>
               Name
             </Form.Label>
             <Col sm='10'>
               <Form.Control
+                required
                 name='name'
                 type='text'
                 onChange={handleInputChange}
@@ -60,8 +73,9 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
             <Form.Label column sm='2'>
               Date
             </Form.Label>
-            <Col sm='5'>
+            <Col sm='10'>
               <Form.Control
+                required
                 name='date'
                 type='date'
                 onChange={handleInputChange}
@@ -72,8 +86,9 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
             <Form.Label column sm='2'>
               Hours
             </Form.Label>
-            <Col sm='3'>
+            <Col sm='10'>
               <Form.Control
+                required
                 name='hours'
                 type='number'
                 onChange={handleInputChange}
@@ -85,18 +100,28 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
               <Form.Check
                 name='isSocialDistancing'
                 label='Is Social Distancing Observed?'
-                onChange={handleInputChange}
+                checked={socialInteraction.isSocialDistancing}
+                onChange={handleCheckBoxChange}
               />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Col sm={{ span: 10, offset: 2 }}>
+              <Button
+                className='mr-1'
+                variant='primary'
+                type='submit'
+                disabled={!isValid}
+              >
+                Save
+              </Button>
+              <Button className='mr-1' variant='secondary'>
+                Cancel
+              </Button>
             </Col>
           </Form.Group>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={handleSave}>Save</Button>
-        <Button variant='secondary' onClick={() => props.onHide()}>
-          Cancel
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
