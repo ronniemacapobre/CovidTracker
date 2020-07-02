@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Button, FormCheck } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 import SocialInteractionTable from './SocialInteractionTable';
 import SocialInteractionModal from './SocialInteractionModal';
 import SocialInteraction from '../../assets/models/SocialInteraction';
-import SocialInteractionService from '../services/SocialInteractionService';
+import { AppState } from '../../store';
+import { fetchSocialInteractions } from '../../store/social-interaction/action';
 
-const SocialInteractionContainer: React.FC = () => {
+interface Props {
+  data: SocialInteraction[];
+  fetchSocialInteractions: () => void;
+}
+
+const SocialInteractionContainer: React.FC<Props> = (props) => {
   const days: number = 14;
   const [showModal, setShowModal] = useState(false);
   const [showAllRecords, setShowAllRecords] = useState(true);
@@ -15,30 +22,37 @@ const SocialInteractionContainer: React.FC = () => {
   >([]);
 
   useEffect(() => {
-    getSocialInteractions();
+    props.fetchSocialInteractions();
   }, []);
 
   const getSocialInteractions = () => {
-    SocialInteractionService.getAll()
-      .then((response) => {
-        setSocialInteractions(
-          response.data.map((sc: any) => new SocialInteraction(sc))
-        );
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    // SocialInteractionService.getAll()
+    //   .then((response) => {
+    //     setSocialInteractions(
+    //       response.data.map((sc: any) => new SocialInteraction(sc))
+    //     );
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
   };
 
   const addNewSocialInteraction = (data: SocialInteraction) => {
-    SocialInteractionService.add(data).then(() => {
-      setShowModal(false);
-      setSocialInteractions([...socialInteractions, data]);
-    });
+    // SocialInteractionService.add(data).then(() => {
+    //   setShowModal(false);
+    //   setSocialInteractions([...socialInteractions, data]);
+    // });
+  };
+
+  const deleteSocialInteraction = (id: string) => {
+    // SocialInteractionService.remove(id).then(() => {
+    //   const copy = socialInteractions.filter((si) => si.id !== id);
+    //   setSocialInteractions([...copy]);
+    // });
   };
 
   const handleShowAllRecords = () => {
-    setShowAllRecords(!showAllRecords);
+    //setShowAllRecords(!showAllRecords);
   };
 
   return (
@@ -57,9 +71,10 @@ const SocialInteractionContainer: React.FC = () => {
         />
       </div>
       <SocialInteractionTable
-        socialInteractions={socialInteractions}
+        socialInteractions={props.data}
         showAll={showAllRecords}
         days={days}
+        onDelete={deleteSocialInteraction}
       />
       <SocialInteractionModal
         show={showModal}
@@ -70,4 +85,10 @@ const SocialInteractionContainer: React.FC = () => {
   );
 };
 
-export default SocialInteractionContainer;
+const mapStateToProps = (state: AppState) => ({
+  data: state.socialInteraction.socialInteractions,
+});
+
+export default connect(mapStateToProps, { fetchSocialInteractions })(
+  SocialInteractionContainer
+);

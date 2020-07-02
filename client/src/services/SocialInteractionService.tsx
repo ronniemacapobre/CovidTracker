@@ -1,6 +1,6 @@
 import http from '../utils/HttpCommon';
 
-import SocialInteraction from '../../assets/models/SocialInteraction';
+import SocialInteraction from '../assets/models/SocialInteraction';
 
 const socialInteractionEndpoint = '/social-interactions';
 
@@ -21,7 +21,7 @@ const update = (id: string, data: SocialInteraction) => {
 };
 
 const remove = (id: string) => {
-  return http.delete(id);
+  return http.delete(`${socialInteractionEndpoint}/${id}`);
 };
 
 export default {

@@ -1,11 +1,12 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import SocialInteraction from '../../assets/models/SocialInteraction';
 
 type Props = {
   socialInteractions: SocialInteraction[] | null;
   showAll: boolean;
   days: number;
+  onDelete: (id: string) => void;
 };
 
 const SocialInteractionTable: React.FC<Props> = (props) => {
@@ -26,17 +27,28 @@ const SocialInteractionTable: React.FC<Props> = (props) => {
       <tbody>
         {props.socialInteractions &&
           props.socialInteractions
-            .filter((sc) => {
-              return props.showAll ? true : sc.date >= date;
+            .sort((a, b) => (a.date >= b.date ? -1 : 1))
+            .filter((si) => {
+              return props.showAll ? true : si.date >= date;
             })
-            .map((sc) => {
+            .map((si) => {
               return (
-                <tr key={sc.id}>
-                  <td>{sc.name}</td>
-                  <td>{sc.date.toLocaleDateString()}</td>
-                  <td>{sc.hours}</td>
-                  <td>{sc.isSocialDistancing ? 'Yes' : 'No'}</td>
-                  <td>Edit Delete</td>
+                <tr key={si.id}>
+                  <td>{si.name}</td>
+                  <td>{si.date}</td>
+                  <td>{si.hours}</td>
+                  <td>{si.isSocialDistancing ? 'Yes' : 'No'}</td>
+                  <td>
+                    <Button variant='success' className='mr-2'>
+                      Edit
+                    </Button>
+                    <Button
+                      variant='danger'
+                      onClick={() => props.onDelete(si.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
                 </tr>
               );
             })}

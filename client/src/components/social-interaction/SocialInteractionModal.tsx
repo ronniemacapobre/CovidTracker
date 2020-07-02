@@ -115,7 +115,11 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
               >
                 Save
               </Button>
-              <Button className='mr-1' variant='secondary'>
+              <Button
+                className='mr-1'
+                variant='secondary'
+                onClick={props.onHide}
+              >
                 Cancel
               </Button>
             </Col>
