@@ -1,42 +1,54 @@
 import {
-  SocialInteractionState,
-  SocialInteractionActionTypes,
-  SET_SOCIAL_INTERACTIONS,
-  ADD_SOCIAL_INTERACTION,
-  DELETE_SOCIAL_INTERACTION,
-  FETCH_SOCIAL_INTERACTIONS,
+  SIState,
+  SIActionTypes,
+  SET_ALL,
+  ADD_SI,
+  EDIT_SI,
+  DELETE_SI,
+  START_REQUEST,
+  FAILED_REQUEST,
 } from './types';
 
-const initialState: SocialInteractionState = {
+const initialState: SIState = {
   loading: false,
-  socialInteractions: [],
+  data: [],
 };
 
-export function socialInteractionReducer(
+export function siReducer(
   state = initialState,
-  action: SocialInteractionActionTypes
-): SocialInteractionState {
+  action: SIActionTypes
+): SIState {
   switch (action.type) {
-    case FETCH_SOCIAL_INTERACTIONS:
+    case START_REQUEST:
       return {
         ...state,
         loading: true,
       };
-
-    case SET_SOCIAL_INTERACTIONS:
+    case FAILED_REQUEST:
       return {
         ...state,
-        socialInteractions: [...action.payload],
+        loading: false,
       };
-    case ADD_SOCIAL_INTERACTION:
+    case SET_ALL:
       return {
         ...state,
-        socialInteractions: [...state.socialInteractions, action.payload],
+        loading: false,
+        data: [...action.payload],
       };
-    case DELETE_SOCIAL_INTERACTION:
+    case ADD_SI:
       return {
         ...state,
-        socialInteractions: state.socialInteractions.filter((si) => {
+        loading: false,
+        data: [...state.data, action.payload],
+      };
+    case EDIT_SI:
+      // TODO
+      return { ...state, loading: false };
+    case DELETE_SI:
+      return {
+        ...state,
+        loading: false,
+        data: state.data.filter((si) => {
           return si.id !== action.payload;
         }),
       };

@@ -6,47 +6,53 @@ export interface SocialInteraction {
   isSocialDistancing: boolean;
 }
 
-export interface SocialInteractionState {
+export interface SIState {
   loading: boolean;
-  socialInteractions: SocialInteraction[];
+  data: SocialInteraction[];
 }
 
-export const FETCH_SOCIAL_INTERACTIONS = 'FETCH_SOCIAL_INTERACTIONS';
-export const SET_SOCIAL_INTERACTIONS = 'SET_SOCIAL_INTERACTIONS';
-export const ADD_SOCIAL_INTERACTION = 'ADD_SOCIAL_INTERACTION';
-export const EDIT_SOCIAL_INTERACTION = 'EDIT_SOCIAL_INTERACTION';
-export const DELETE_SOCIAL_INTERACTION = 'DELETE_SOCIAL_INTERACTION';
+export const START_REQUEST = 'START_REQUEST';
+export const FAILED_REQUEST = 'FAILED_REQUEST';
+export const SET_ALL = 'SET_SOCIAL_INTERACTIONS';
+export const ADD_SI = 'ADD_SOCIAL_INTERACTION';
+export const EDIT_SI = 'EDIT_SOCIAL_INTERACTION';
+export const DELETE_SI = 'DELETE_SOCIAL_INTERACTION';
 
-interface FetchSocialInteractionsAction {
-  type: typeof FETCH_SOCIAL_INTERACTIONS;
+interface StartSIAction {
+  type: typeof START_REQUEST;
 }
 
-interface SetSocialInteractionsAction {
-  type: typeof SET_SOCIAL_INTERACTIONS;
+interface FailedSIAction {
+  type: typeof FAILED_REQUEST;
+}
+
+interface SetSIsAction {
+  type: typeof SET_ALL;
   payload: SocialInteraction[];
 }
 
-interface AddSocialInteractionAction {
-  type: typeof ADD_SOCIAL_INTERACTION;
+interface AddSIAction {
+  type: typeof ADD_SI;
   payload: SocialInteraction;
 }
 
-interface EditSocialInteractionAction {
-  type: typeof EDIT_SOCIAL_INTERACTION;
+interface EditSIAction {
+  type: typeof EDIT_SI;
   payload: {
     id: string;
     data: SocialInteraction;
   };
 }
 
-interface DeleteSocialInteractionAction {
-  type: typeof DELETE_SOCIAL_INTERACTION;
+interface DeleteSIAction {
+  type: typeof DELETE_SI;
   payload: string;
 }
 
-export type SocialInteractionActionTypes =
-  | FetchSocialInteractionsAction
-  | SetSocialInteractionsAction
-  | AddSocialInteractionAction
-  | EditSocialInteractionAction
-  | DeleteSocialInteractionAction;
+export type SIActionTypes =
+  | StartSIAction
+  | FailedSIAction
+  | SetSIsAction
+  | AddSIAction
+  | EditSIAction
+  | DeleteSIAction;

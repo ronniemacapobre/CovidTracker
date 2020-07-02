@@ -6,11 +6,11 @@ import SocialInteractionTable from './SocialInteractionTable';
 import SocialInteractionModal from './SocialInteractionModal';
 import SocialInteraction from '../../assets/models/SocialInteraction';
 import { AppState } from '../../store';
-import { fetchSocialInteractions } from '../../store/social-interaction/action';
+import { fetchAll } from '../../store/social-interaction/action';
 
 interface Props {
   data: SocialInteraction[];
-  fetchSocialInteractions: () => void;
+  fetchAll: () => void;
 }
 
 const SocialInteractionContainer: React.FC<Props> = (props) => {
@@ -22,8 +22,8 @@ const SocialInteractionContainer: React.FC<Props> = (props) => {
   >([]);
 
   useEffect(() => {
-    props.fetchSocialInteractions();
-  }, []);
+    props.fetchAll();
+  }, [fetchAll]);
 
   const getSocialInteractions = () => {
     // SocialInteractionService.getAll()
@@ -86,9 +86,9 @@ const SocialInteractionContainer: React.FC<Props> = (props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  data: state.socialInteraction.socialInteractions,
+  data: state.socialInteraction.data,
 });
 
-export default connect(mapStateToProps, { fetchSocialInteractions })(
+export default connect(mapStateToProps, { fetchAll })(
   SocialInteractionContainer
 );

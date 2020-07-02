@@ -1,45 +1,45 @@
-import {
-  SocialInteraction,
-  SET_SOCIAL_INTERACTIONS,
-  ADD_SOCIAL_INTERACTION,
-  SocialInteractionActionTypes,
-  EDIT_SOCIAL_INTERACTION,
-  DELETE_SOCIAL_INTERACTION,
-  FETCH_SOCIAL_INTERACTIONS,
-} from './types';
 import { Dispatch } from 'react';
 import { Action } from 'redux';
-import axios from 'axios';
+
+import {
+  SocialInteraction,
+  SIActionTypes,
+  SET_ALL,
+  START_REQUEST,
+  FAILED_REQUEST,
+  ADD_SI,
+  EDIT_SI,
+  DELETE_SI,
+} from './types';
 import SocialInteractionService from '../../services/SocialInteractionService';
 
-export function fetchSocialInteractionsRequestAction(): SocialInteractionActionTypes {
-  return { type: FETCH_SOCIAL_INTERACTIONS };
+export function startRequestAction(): SIActionTypes {
+  return { type: START_REQUEST };
 }
 
-export function setSocialInteractions(
-  siList: SocialInteraction[]
-): SocialInteractionActionTypes {
+export function failedRequestAction(): SIActionTypes {
   return {
-    type: SET_SOCIAL_INTERACTIONS,
-    payload: siList,
+    type: FAILED_REQUEST,
   };
 }
 
-export function addSocialInteraction(
-  si: SocialInteraction
-): SocialInteractionActionTypes {
+export function setSIsAction(data: SocialInteraction[]): SIActionTypes {
   return {
-    type: ADD_SOCIAL_INTERACTION,
+    type: SET_ALL,
+    payload: data,
+  };
+}
+
+export function addSIAction(si: SocialInteraction): SIActionTypes {
+  return {
+    type: ADD_SI,
     payload: si,
   };
 }
 
-export function editSocialInteraction(
-  id: string,
-  si: SocialInteraction
-): SocialInteractionActionTypes {
+export function editSIAction(id: string, si: SocialInteraction): SIActionTypes {
   return {
-    type: EDIT_SOCIAL_INTERACTION,
+    type: EDIT_SI,
     payload: {
       id: id,
       data: si,
@@ -47,20 +47,21 @@ export function editSocialInteraction(
   };
 }
 
-export function deleteSocialInteraction(
-  id: string
-): SocialInteractionActionTypes {
+export function deleteSIAction(id: string): SIActionTypes {
   return {
-    type: DELETE_SOCIAL_INTERACTION,
+    type: DELETE_SI,
     payload: id,
   };
 }
 
-export const fetchSocialInteractions = () => {
+export const fetchAll = () => {
   return function (dispatch: Dispatch<Action>) {
-    dispatch(fetchSocialInteractionsRequestAction());
+    dispatch(startRequestAction());
     SocialInteractionService.getAll()
-      .then((response) => dispatch(setSocialInteractions(response.data)))
-      .catch((error) => console.log(error));
+      .then((response) => dispatch(setSIsAction(response.data)))
+      .catch((error) => {
+        dispatch(failedRequestAction());
+        console.log(error);
+      });
   };
 };
