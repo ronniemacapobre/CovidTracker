@@ -1,48 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Button, FormCheck } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
+import { AppState } from '../../store';
+import {
+  fetchAll,
+  setSIsAction,
+  setFilterAction,
+} from '../../store/social-interaction/action';
 import SocialInteractionTable from './SocialInteractionTable';
 import SocialInteractionModal from './SocialInteractionModal';
-import SocialInteraction from '../../assets/models/SocialInteraction';
-import { AppState } from '../../store';
-import { fetchAll } from '../../store/social-interaction/action';
+import { SocialInteraction } from '../../store/social-interaction/types';
 
 interface Props {
+  loading: boolean;
   data: SocialInteraction[];
+  isFiltered: boolean;
   fetchAll: () => void;
 }
 
 const SocialInteractionContainer: React.FC<Props> = (props) => {
-  const days: number = 14;
   const [showModal, setShowModal] = useState(false);
-  const [showAllRecords, setShowAllRecords] = useState(true);
-  const [socialInteractions, setSocialInteractions] = useState<
-    SocialInteraction[]
-  >([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     props.fetchAll();
   }, [fetchAll]);
-
-  const getSocialInteractions = () => {
-    // SocialInteractionService.getAll()
-    //   .then((response) => {
-    //     setSocialInteractions(
-    //       response.data.map((sc: any) => new SocialInteraction(sc))
-    //     );
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
-  };
-
-  const addNewSocialInteraction = (data: SocialInteraction) => {
-    // SocialInteractionService.add(data).then(() => {
-    //   setShowModal(false);
-    //   setSocialInteractions([...socialInteractions, data]);
-    // });
-  };
 
   const deleteSocialInteraction = (id: string) => {
     // SocialInteractionService.remove(id).then(() => {
@@ -51,8 +34,14 @@ const SocialInteractionContainer: React.FC<Props> = (props) => {
     // });
   };
 
-  const handleShowAllRecords = () => {
-    //setShowAllRecords(!showAllRecords);
+  const filterRecords = () => {
+    dispatch(setFilterAction());
+
+    if (!props.isFiltered) {
+      dispatch(setSIsAction(props.data));
+    } else {
+      props.fetchAll();
+    }
   };
 
   return (
@@ -60,32 +49,39 @@ const SocialInteractionContainer: React.FC<Props> = (props) => {
       <h1>Social Interaction List</h1>
       <div className='social-int__controls mb-2'>
         <div className='social-int__actions'>
-          <Button onClick={() => setShowModal(true)}>
+          <Button
+            variant='success'
+            type='button'
+            onClick={() => setShowModal(true)}
+          >
             Add Social Interaction
           </Button>
         </div>
         <FormCheck
           label='Display records within last 14 days'
-          defaultChecked={!showAllRecords}
-          onChange={handleShowAllRecords}
+          defaultChecked={props.isFiltered}
+          onChange={filterRecords}
         />
       </div>
-      <SocialInteractionTable
-        socialInteractions={props.data}
-        showAll={showAllRecords}
-        days={days}
-        onDelete={deleteSocialInteraction}
-      />
+      {props.loading ? (
+        <span className='text-center'>Loading...</span>
+      ) : (
+        <SocialInteractionTable
+          socialInteractions={props.data}
+          onDelete={deleteSocialInteraction}
+        />
+      )}
       <SocialInteractionModal
         show={showModal}
         onHide={() => setShowModal(false)}
-        onSave={addNewSocialInteraction}
       />
     </div>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
+  loading: state.socialInteraction.loading,
+  isFiltered: state.socialInteraction.isFiltered,
   data: state.socialInteraction.data,
 });
 

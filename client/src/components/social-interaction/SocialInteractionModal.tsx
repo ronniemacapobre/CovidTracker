@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
-import SocialInteraction from '../../assets/models/SocialInteraction';
+import { connect, useDispatch } from 'react-redux';
+
+import { SocialInteraction } from '../../store/social-interaction/types';
+import { AppState } from '../../store';
+import { addSI, fetchAll } from '../../store/social-interaction/action';
+
+type StateProps = {
+  addSI: (data: SocialInteraction) => void;
+  fetchAll: () => void;
+};
 
 type Props = {
   show: boolean;
   onHide: () => void;
-  onSave: (data: SocialInteraction) => void;
 };
 
-const SocialInteractionModal: React.FC<Props> = (props) => {
+const SocialInteractionModal: React.FC<Props & StateProps> = (props) => {
   const initialSocialInteractionState = {
-    _id: 0,
+    id: '',
     name: '',
-    date: null,
-    hours: '',
+    date: new Date(),
+    hours: 0,
     isSocialDistancing: false,
   };
 
@@ -33,7 +41,9 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    props.onSave(new SocialInteraction(socialInteraction));
+    props.addSI(socialInteraction);
+    props.fetchAll();
+    props.onHide();
   };
 
   const isValid =
@@ -44,10 +54,11 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
 
   return (
     <Modal
-      {...props}
-      size='sm'
+      show={props.show}
+      size='lg'
       aria-labelledby='contained-modal-title-vcenter'
       centered
+      backdrop='static'
     >
       <Modal.Header>
         <Modal.Title id='contained-modal-title-vcenter'>
@@ -78,6 +89,7 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
                 required
                 name='date'
                 type='date'
+                defaultValue={new Date().toISOString().substr(0, 10)}
                 onChange={handleInputChange}
               />
             </Col>
@@ -130,4 +142,8 @@ const SocialInteractionModal: React.FC<Props> = (props) => {
   );
 };
 
-export default SocialInteractionModal;
+const mapStateToProps = (state: AppState) => ({
+  //loading: state.socialInteraction.loading,
+});
+
+export default connect(null, { addSI, fetchAll })(SocialInteractionModal);

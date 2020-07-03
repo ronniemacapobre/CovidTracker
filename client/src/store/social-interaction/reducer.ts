@@ -7,10 +7,12 @@ import {
   DELETE_SI,
   START_REQUEST,
   FAILED_REQUEST,
+  SET_FILTER,
 } from './types';
 
 const initialState: SIState = {
   loading: false,
+  isFiltered: false,
   data: [],
 };
 
@@ -30,10 +32,20 @@ export function siReducer(
         loading: false,
       };
     case SET_ALL:
+      let cutOffDate = new Date();
+      // TODO: Move to environment variable
+      cutOffDate.setDate(cutOffDate.getDate() - 14);
+
+      let data = state.isFiltered
+        ? action.payload.filter((si) => {
+            return si.date >= cutOffDate;
+          })
+        : action.payload;
+
       return {
         ...state,
         loading: false,
-        data: [...action.payload],
+        data: [...data],
       };
     case ADD_SI:
       return {
@@ -51,6 +63,11 @@ export function siReducer(
         data: state.data.filter((si) => {
           return si.id !== action.payload;
         }),
+      };
+    case SET_FILTER:
+      return {
+        ...state,
+        isFiltered: !state.isFiltered,
       };
     default:
       return state;

@@ -1,19 +1,29 @@
-export interface SocialInteraction {
-  id: string;
-  name: string;
-  date: Date;
-  hours: number;
-  isSocialDistancing: boolean;
+export class SocialInteraction {
+  public id: string;
+  public name: string;
+  public date: Date;
+  public hours: number;
+  public isSocialDistancing: boolean;
+
+  constructor(data: any) {
+    this.id = data._id;
+    this.name = data.name;
+    this.date = new Date(data.date);
+    this.hours = data.hours;
+    this.isSocialDistancing = data.isSocialDistancing;
+  }
 }
 
 export interface SIState {
   loading: boolean;
+  isFiltered: boolean;
   data: SocialInteraction[];
 }
 
 export const START_REQUEST = 'START_REQUEST';
 export const FAILED_REQUEST = 'FAILED_REQUEST';
 export const SET_ALL = 'SET_SOCIAL_INTERACTIONS';
+export const SET_FILTER = 'SET_FILTER';
 export const ADD_SI = 'ADD_SOCIAL_INTERACTION';
 export const EDIT_SI = 'EDIT_SOCIAL_INTERACTION';
 export const DELETE_SI = 'DELETE_SOCIAL_INTERACTION';
@@ -49,10 +59,15 @@ interface DeleteSIAction {
   payload: string;
 }
 
+interface SetFilterAction {
+  type: typeof SET_FILTER;
+}
+
 export type SIActionTypes =
   | StartSIAction
   | FailedSIAction
   | SetSIsAction
   | AddSIAction
   | EditSIAction
-  | DeleteSIAction;
+  | DeleteSIAction
+  | SetFilterAction;

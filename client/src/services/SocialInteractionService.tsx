@@ -1,6 +1,5 @@
 import http from '../utils/HttpCommon';
-
-import SocialInteraction from '../assets/models/SocialInteraction';
+import { SocialInteraction } from '../store/social-interaction/types';
 
 const socialInteractionEndpoint = '/social-interactions';
 
