@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import ModalContainer from '../shared/ModalContainer';
-import { addSI, fetchAll } from '../../store/social-interaction/action';
+import { addSI, fetchAll } from '../../store/social-interaction/utils';
 import { SocialInteraction } from '../../store/social-interaction/types';
 
 type StateProps = {
@@ -12,7 +12,7 @@ type StateProps = {
 };
 
 type Props = {
-  id: string;
+  id?: string;
   show: boolean;
   onHide: () => void;
 };

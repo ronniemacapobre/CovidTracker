@@ -5,7 +5,6 @@ import { Button } from 'react-bootstrap';
 
 type Props = {
   show: boolean;
-  data: SocialInteraction;
   onHide: () => void;
 };
 

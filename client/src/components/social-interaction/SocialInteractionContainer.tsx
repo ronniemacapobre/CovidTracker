@@ -4,11 +4,12 @@ import { connect, useDispatch } from 'react-redux';
 
 import { AppState } from '../../store';
 import {
-  fetchAll,
   setSIsAction,
   setFilterAction,
   deleteSIAction,
 } from '../../store/social-interaction/action';
+
+import { fetchAll } from '../../store/social-interaction/utils';
 import SocialInteractionTable from './SocialInteractionTable';
 import { SocialInteraction } from '../../store/social-interaction/types';
 import AddSIModal from './AddSIModal';
