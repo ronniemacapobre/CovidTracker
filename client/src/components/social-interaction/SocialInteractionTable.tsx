@@ -35,6 +35,7 @@ const SocialInteractionTable: React.FC<Props> = (props) => {
                   <Button
                     variant='danger'
                     onClick={() => props.onDelete(si.id)}
+                    data={si}
                   >
                     Delete
                   </Button>

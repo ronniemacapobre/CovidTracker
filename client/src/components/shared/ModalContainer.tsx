@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
 export type ModalProps = {
-  header?: React.ReactNode;
+  title: string;
   modalSize?: 'sm' | 'lg' | 'xl';
 };
 
 type Props = {
-  toggle?: boolean;
-  onClose?: () => void;
+  toggle: boolean;
 };
 
 const ModalContainer: React.FC<Props & ModalProps> = (props) => {
+  const [toggle, setToggle] = useState(props.toggle);
+
   return (
-    <Modal show={props.toggle} onHide={props.onClose} size={props.modalSize}>
+    <Modal
+      show={props.toggle}
+      size={props.modalSize}
+      centered
+      backdrop='static'
+    >
       <Modal.Header>
-        <Modal.Title>{props.header}</Modal.Title>
+        <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{props.children}</Modal.Body>
     </Modal>

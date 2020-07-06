@@ -7,27 +7,32 @@ import {
   fetchAll,
   setSIsAction,
   setFilterAction,
+  deleteSIAction,
 } from '../../store/social-interaction/action';
 import SocialInteractionTable from './SocialInteractionTable';
-import SocialInteractionModal from './SocialInteractionModal';
 import { SocialInteraction } from '../../store/social-interaction/types';
+import AddSIModal from './AddSIModal';
+import DeleteSIModal from './DeleteSIModal';
 
-interface Props {
+type StateProps = {
   loading: boolean;
   data: SocialInteraction[];
   isFiltered: boolean;
   fetchAll: () => void;
-}
+  deleteSI: (id: string) => void;
+};
 
-const SocialInteractionContainer: React.FC<Props> = (props) => {
+const SocialInteractionContainer: React.FC<StateProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     props.fetchAll();
   }, [fetchAll]);
 
-  const deleteSocialInteraction = (id: string) => {
+  const onShowDeleteModal = (id: string) => {
+    setShowDeleteModal(true);
     // SocialInteractionService.remove(id).then(() => {
     //   const copy = socialInteractions.filter((si) => si.id !== id);
     //   setSocialInteractions([...copy]);
@@ -68,12 +73,14 @@ const SocialInteractionContainer: React.FC<Props> = (props) => {
       ) : (
         <SocialInteractionTable
           socialInteractions={props.data}
-          onDelete={deleteSocialInteraction}
+          onDelete={onShowDeleteModal}
         />
       )}
-      <SocialInteractionModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
+
+      <AddSIModal show={showModal} onHide={() => setShowModal(false)} />
+      <DeleteSIModal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
       />
     </div>
   );
