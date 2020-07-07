@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 import { SocialInteraction } from '../../store/social-interaction/types';
-import { Button } from 'react-bootstrap';
 import SocialInteractionTableRowViewMode from './SocialInteractionTableRowViewMode';
 import SocialInteractionTableRowEditMode from './SocialInteractionTableRowEditMode';
+import { toggleDeleteSIAction } from '../../store/social-interaction/action';
+
+type StateProps = {
+  beginDelete: (id: string) => void;
+};
 
 type Props = {
   data: SocialInteraction;
 };
 
-const SocialInteractionEditableTableRow: React.FC<Props> = ({ data }) => {
+const SocialInteractionEditableTableRow: React.FC<StateProps & Props> = ({
+  data,
+  beginDelete,
+}) => {
   const [isEdit, setIsEdit] = useState(false);
 
-  const handleEdit = (data: SocialInteraction) => {
+  const handleBeginEdit = (data: SocialInteraction) => {
     setIsEdit(true);
-    console.log(data);
-  };
-
-  const handleDelete = (id: string) => {
-    console.log(id);
   };
 
   return (
@@ -31,12 +34,19 @@ const SocialInteractionEditableTableRow: React.FC<Props> = ({ data }) => {
       ) : (
         <SocialInteractionTableRowViewMode
           data={data}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
+          onEdit={handleBeginEdit}
+          onDelete={() => beginDelete(data.id)}
         />
       )}
     </>
   );
 };
 
-export default SocialInteractionEditableTableRow;
+const mapDispatchToProps = (dispatch: any) => ({
+  beginDelete: (id: string) => dispatch(toggleDeleteSIAction(id)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SocialInteractionEditableTableRow);

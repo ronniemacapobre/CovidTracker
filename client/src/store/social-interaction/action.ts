@@ -1,6 +1,3 @@
-import { Dispatch } from 'react';
-import { Action } from 'redux';
-
 import {
   SocialInteraction,
   SIActionTypes,
@@ -11,8 +8,8 @@ import {
   EDIT_SI,
   DELETE_SI,
   SET_FILTER,
+  TOGGLE_DELETE_SI,
 } from './types';
-import SocialInteractionService from '../../services/SocialInteractionService';
 
 export function startRequestAction(): SIActionTypes {
   return { type: START_REQUEST };
@@ -57,4 +54,11 @@ export function deleteSIAction(id: string): SIActionTypes {
 
 export function setFilterAction(): SIActionTypes {
   return { type: SET_FILTER };
+}
+
+export function toggleDeleteSIAction(id: string): SIActionTypes {
+  return {
+    type: TOGGLE_DELETE_SI,
+    payload: id,
+  };
 }

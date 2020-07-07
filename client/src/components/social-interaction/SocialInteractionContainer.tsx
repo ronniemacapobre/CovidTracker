@@ -6,7 +6,6 @@ import { AppState } from '../../store';
 import {
   setSIsAction,
   setFilterAction,
-  deleteSIAction,
 } from '../../store/social-interaction/action';
 
 import { fetchAll } from '../../store/social-interaction/utils';
@@ -25,20 +24,11 @@ type StateProps = {
 
 const SocialInteractionContainer: React.FC<StateProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     props.fetchAll();
   }, [fetchAll]);
-
-  const onShowDeleteModal = (id: string) => {
-    setShowDeleteModal(true);
-    // SocialInteractionService.remove(id).then(() => {
-    //   const copy = socialInteractions.filter((si) => si.id !== id);
-    //   setSocialInteractions([...copy]);
-    // });
-  };
 
   const filterRecords = () => {
     dispatch(setFilterAction());
@@ -72,17 +62,11 @@ const SocialInteractionContainer: React.FC<StateProps> = (props) => {
       {props.loading ? (
         <span className='text-center'>Loading...</span>
       ) : (
-        <SocialInteractionTable
-          socialInteractions={props.data}
-          onDelete={onShowDeleteModal}
-        />
+        <SocialInteractionTable socialInteractions={props.data} />
       )}
 
       <AddSIModal show={showModal} onHide={() => setShowModal(false)} />
-      <DeleteSIModal
-        show={showDeleteModal}
-        onHide={() => setShowDeleteModal(false)}
-      />
+      <DeleteSIModal />
     </div>
   );
 };
@@ -93,6 +77,11 @@ const mapStateToProps = (state: AppState) => ({
   data: state.socialInteraction.data,
 });
 
-export default connect(mapStateToProps, { fetchAll })(
-  SocialInteractionContainer
-);
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchAll: () => dispatch(fetchAll()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SocialInteractionContainer);

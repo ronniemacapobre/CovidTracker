@@ -1,26 +1,51 @@
 import React from 'react';
-import ModalContainer from '../shared/ModalContainer';
-import { SocialInteraction } from '../../store/social-interaction/types';
+import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-type Props = {
-  show: boolean;
-  onHide: () => void;
+import ModalContainer from '../shared/ModalContainer';
+import { AppState } from '../../store';
+import {
+  toggleDeleteSIAction,
+  deleteSIAction,
+} from '../../store/social-interaction/action';
+import { deleteSI } from '../../store/social-interaction/utils';
+
+type StateProps = {
+  idToDelete: string;
+  toggleDeleteSI: (id: string) => void;
+  onDelete: (id: string) => void;
+  deleteSI: (id: string) => void;
 };
 
-const DeleteSIModal: React.FC<Props> = (props) => {
+const DeleteSIModal: React.FC<StateProps> = ({
+  idToDelete,
+  toggleDeleteSI,
+  onDelete,
+  deleteSI,
+}) => {
+  const handleDelete = (id: string) => {
+    deleteSI(id);
+    onDelete(id);
+    toggleDeleteSI('');
+  };
+
   return (
     <ModalContainer
       title='Delete Social Interaction'
       modalSize='sm'
-      toggle={props.show}
+      toggle={idToDelete !== ''}
     >
       <span>Are you sure you want to delete this?</span>
       <div className='mt-3 float-right'>
-        <Button className='mr-2' variant='primary' type='button'>
+        <Button
+          className='mr-2'
+          variant='primary'
+          type='button'
+          onClick={() => handleDelete(idToDelete)}
+        >
           Yes
         </Button>
-        <Button variant='secondary' onClick={props.onHide}>
+        <Button variant='secondary' onClick={() => toggleDeleteSI('')}>
           No
         </Button>
       </div>
@@ -28,4 +53,14 @@ const DeleteSIModal: React.FC<Props> = (props) => {
   );
 };
 
-export default DeleteSIModal;
+const mapStateToProps = (state: AppState) => ({
+  idToDelete: state.socialInteraction.idToDelete,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  toggleDeleteSI: (id: string) => dispatch(toggleDeleteSIAction(id)),
+  onDelete: (id: string) => dispatch(deleteSIAction(id)),
+  deleteSI: (id: string) => dispatch(deleteSI(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteSIModal);

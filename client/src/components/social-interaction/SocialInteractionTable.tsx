@@ -5,7 +5,6 @@ import SocialInteractionEditableTableRow from './SocialInteractionEditableTableR
 
 type Props = {
   socialInteractions: SocialInteraction[] | null;
-  onDelete: (id: string) => void;
 };
 
 const SocialInteractionTable: React.FC<Props> = (props) => {

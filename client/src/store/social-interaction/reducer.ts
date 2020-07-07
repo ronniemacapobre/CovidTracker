@@ -8,11 +8,13 @@ import {
   START_REQUEST,
   FAILED_REQUEST,
   SET_FILTER,
+  TOGGLE_DELETE_SI,
 } from './types';
 
 const initialState: SIState = {
   loading: false,
   isFiltered: false,
+  idToDelete: '',
   data: [],
 };
 
@@ -60,6 +62,7 @@ export function siReducer(
       return {
         ...state,
         loading: false,
+        idToDelete: '',
         data: state.data.filter((si) => {
           return si.id !== action.payload;
         }),
@@ -68,6 +71,11 @@ export function siReducer(
       return {
         ...state,
         isFiltered: !state.isFiltered,
+      };
+    case TOGGLE_DELETE_SI:
+      return {
+        ...state,
+        idToDelete: action.payload,
       };
     default:
       return state;

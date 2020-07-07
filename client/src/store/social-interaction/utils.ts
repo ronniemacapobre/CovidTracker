@@ -38,3 +38,17 @@ export const fetchAll = () => {
       });
   };
 };
+
+export const deleteSI = (id: string) => {
+  return function (dispatch: Dispatch<Action>) {
+    dispatch(startRequestAction());
+    SocialInteractionService.remove(id)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        dispatch(failedRequestAction());
+        console.log(error);
+      });
+  };
+};

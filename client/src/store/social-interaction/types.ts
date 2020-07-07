@@ -17,6 +17,7 @@ export class SocialInteraction {
 export interface SIState {
   loading: boolean;
   isFiltered: boolean;
+  idToDelete: string;
   data: SocialInteraction[];
 }
 
@@ -27,6 +28,7 @@ export const SET_FILTER = 'SET_FILTER';
 export const ADD_SI = 'ADD_SOCIAL_INTERACTION';
 export const EDIT_SI = 'EDIT_SOCIAL_INTERACTION';
 export const DELETE_SI = 'DELETE_SOCIAL_INTERACTION';
+export const TOGGLE_DELETE_SI = 'TOGGLE_DELETE_SOCIAL_INTERACTION';
 
 interface StartSIAction {
   type: typeof START_REQUEST;
@@ -63,6 +65,11 @@ interface SetFilterAction {
   type: typeof SET_FILTER;
 }
 
+interface ToggleDeleteSIAction {
+  type: typeof TOGGLE_DELETE_SI;
+  payload: string;
+}
+
 export type SIActionTypes =
   | StartSIAction
   | FailedSIAction
@@ -70,4 +77,5 @@ export type SIActionTypes =
   | AddSIAction
   | EditSIAction
   | DeleteSIAction
-  | SetFilterAction;
+  | SetFilterAction
+  | ToggleDeleteSIAction;
