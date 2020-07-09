@@ -1,27 +1,27 @@
 import {
-  SIState,
-  SIActionTypes,
-  SET_ALL,
-  ADD_SI,
-  EDIT_SI,
-  DELETE_SI,
+  VPState,
+  VPActionTypes,
   START_REQUEST,
   FAILED_REQUEST,
+  SET_ALL,
+  ADD_VP,
+  EDIT_VP,
+  DELETE_VP,
   SET_FILTER,
-  TOGGLE_DELETE_SI,
+  TOGGLE_DELETE_VP,
 } from './types';
 
-const initialState: SIState = {
+const initialState: VPState = {
   loading: false,
   isFiltered: false,
   idToDelete: '',
   data: [],
 };
 
-export function siReducer(
+export function visitedPlacesReducer(
   state = initialState,
-  action: SIActionTypes
-): SIState {
+  action: VPActionTypes
+): VPState {
   switch (action.type) {
     case START_REQUEST:
       return {
@@ -49,29 +49,29 @@ export function siReducer(
         loading: false,
         data: [...data],
       };
-    case ADD_SI:
+    case ADD_VP:
       return {
         ...state,
         loading: false,
         data: [...state.data, action.payload],
       };
-    case EDIT_SI:
+    case EDIT_VP:
       return {
         ...state,
         loading: false,
-        data: state.data.map((si) =>
-          si.id === action.payload.id
+        data: state.data.map((visitedPlace) =>
+          visitedPlace.id === action.payload.id
             ? {
-                ...si,
-                name: action.payload.data.name,
+                ...visitedPlace,
+                name: action.payload.data.place,
                 date: action.payload.data.date,
                 hours: action.payload.data.hours,
-                isSocialDistancing: action.payload.data.isSocialDistancing,
+                isCrowded: action.payload.data.isCrowded,
               }
-            : si
+            : visitedPlace
         ),
       };
-    case DELETE_SI:
+    case DELETE_VP:
       return {
         ...state,
         loading: false,
@@ -85,7 +85,7 @@ export function siReducer(
         ...state,
         isFiltered: !state.isFiltered,
       };
-    case TOGGLE_DELETE_SI:
+    case TOGGLE_DELETE_VP:
       return {
         ...state,
         idToDelete: action.payload,

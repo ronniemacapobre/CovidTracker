@@ -194,11 +194,24 @@ a:hover {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-// Social Interaction stlyes
-.social-int {
+// Social Interaction and Visited Places stlyes
+.social-int,
+.visited-places {
   &__controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+}
+
+table {
+  & thead {
+    background-color: #313541;
+    color: white;
+  }
+  & tbody {
+    & .pum {
+      background-color: mistyrose;
+    }
   }
 }

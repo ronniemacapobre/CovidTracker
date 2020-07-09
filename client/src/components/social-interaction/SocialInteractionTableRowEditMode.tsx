@@ -11,16 +11,17 @@ const SocialInteractionTableRowEditMode: React.FC<Props> = ({
   data,
   onCancel,
 }) => {
-  const [socialInteraction, setSocialInteraction] = useState(data);
+  const [socialInteraction, setSocialInteraction] = useState(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    setSocialInteraction({ ...socialInteraction, [name]: value });
+    const { value } = e.currentTarget;
+    console.log(value);
+    // setSocialInteraction({ ...socialInteraction, [name]: value });
   };
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.currentTarget;
-    setSocialInteraction({ ...socialInteraction, [name]: checked });
+    // const { name, checked } = e.currentTarget;
+    // setSocialInteraction({ ...socialInteraction, [name]: checked });
   };
 
   return (

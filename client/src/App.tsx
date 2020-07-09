@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import Main from './components/Main';
 
 import './App.scss';
+import VisitedPlacesContainer from './components/visited-places/VisitedPlacesContainer';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
           path='/social-interaction'
           component={SocialInteractionContainer}
         />
+        <Route path='/visited-places' component={VisitedPlacesContainer} />
       </Switch>
       <Footer />
     </div>

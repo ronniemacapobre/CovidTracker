@@ -10,7 +10,7 @@ const Navigation: React.FC = () => {
           </a>
         </li>
         <li className='menu__item'>
-          <a className='menu__link' href='#'>
+          <a className='menu__link' href='visited-places'>
             Place Exposure
           </a>
         </li>
