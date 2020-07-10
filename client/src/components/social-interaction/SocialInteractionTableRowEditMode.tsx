@@ -1,27 +1,38 @@
 import React, { useState } from 'react';
-import { SocialInteraction } from '../../store/social-interaction/types';
 import { Form, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import { SocialInteraction } from '../../store/social-interaction/types';
+import { editSI } from '../../store/social-interaction/utils';
+
+type StateProps = {
+  editSI: (id: string, updatedSI: SocialInteraction) => void;
+};
 
 type Props = {
   data: SocialInteraction;
   onCancel: () => void;
 };
 
-const SocialInteractionTableRowEditMode: React.FC<Props> = ({
+const SocialInteractionTableRowEditMode: React.FC<Props & StateProps> = ({
   data,
   onCancel,
+  editSI,
 }) => {
-  const [socialInteraction, setSocialInteraction] = useState(null);
+  const [socialInteraction, setSocialInteraction] = useState(data);
+
+  const handleEdit = (updatedSI: SocialInteraction) => {
+    editSI(updatedSI.id, updatedSI);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
-    console.log(value);
-    // setSocialInteraction({ ...socialInteraction, [name]: value });
+    const { name, value } = e.currentTarget;
+    setSocialInteraction({ ...socialInteraction, [name]: value });
   };
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const { name, checked } = e.currentTarget;
-    // setSocialInteraction({ ...socialInteraction, [name]: checked });
+    const { name, checked } = e.currentTarget;
+    setSocialInteraction({ ...socialInteraction, [name]: checked });
   };
 
   return (
@@ -29,16 +40,18 @@ const SocialInteractionTableRowEditMode: React.FC<Props> = ({
       <td>
         <Form.Control
           type='text'
-          name='name'
-          value={data.name}
           onChange={handleInputChange}
+          name='name'
+          value={socialInteraction.name}
         />
       </td>
       <td>
         <Form.Control
           type='date'
           name='date'
-          defaultValue={data.date.toISOString().substr(0, 10)}
+          defaultValue={new Date(socialInteraction.date)
+            .toISOString()
+            .substr(0, 10)}
           onChange={handleInputChange}
         />
       </td>
@@ -46,19 +59,24 @@ const SocialInteractionTableRowEditMode: React.FC<Props> = ({
         <Form.Control
           type='number'
           name='hours'
-          value={data.hours}
+          value={socialInteraction.hours}
           onChange={handleInputChange}
         />
       </td>
       <td>
         <Form.Check
           name='isSocialDistancing'
-          checked={data.isSocialDistancing}
+          checked={socialInteraction.isSocialDistancing}
           onChange={handleCheckBoxChange}
         />
       </td>
       <td>
-        <Button className='mr-1' variant='primary' type='submit'>
+        <Button
+          className='mr-1'
+          variant='primary'
+          type='button'
+          onClick={() => handleEdit(socialInteraction)}
+        >
           Update
         </Button>
         <Button variant='secondary' onClick={onCancel}>
@@ -69,4 +87,12 @@ const SocialInteractionTableRowEditMode: React.FC<Props> = ({
   );
 };
 
-export default SocialInteractionTableRowEditMode;
+const mapDispatchToProps = (dispatch: any) => ({
+  editSI: (id: string, updatedSI: SocialInteraction) =>
+    dispatch(editSI(id, updatedSI)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SocialInteractionTableRowEditMode);

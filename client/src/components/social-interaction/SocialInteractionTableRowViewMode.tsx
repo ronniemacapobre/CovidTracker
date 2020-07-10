@@ -17,7 +17,7 @@ const SocialInteractionTableRowViewMode: React.FC<Props> = ({
   return (
     <tr className={!data.isSocialDistancing ? 'pum' : ''}>
       <td>{data.name}</td>
-      <td>{data.date.toLocaleDateString()}</td>
+      <td>{new Date(data.date).toLocaleDateString()}</td>
       <td>{data.hours}</td>
       <td>{data.isSocialDistancing ? 'Yes' : 'No'}</td>
       <td>

@@ -2,7 +2,7 @@ import http from '../utils/HttpCommon';
 
 import { VisitedPlace } from '../store/visited-places/types';
 
-const visitedPlaceEndpoint = '/visited-place';
+const visitedPlaceEndpoint = '/visited-places';
 
 const getAll = () => {
   return http.get(visitedPlaceEndpoint);

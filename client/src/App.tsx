@@ -2,13 +2,13 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Navigation from './components/Navigation';
-import SocialInteractionContainer from './components/social-interaction/SocialInteractionContainer';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Main from './components/Main';
+import SocialInteractionPage from './pages/SocialInteractionPage';
+import VisitedPlacesPage from './pages/VisitedPlacesPage';
 
 import './App.scss';
-import VisitedPlacesContainer from './components/visited-places/VisitedPlacesContainer';
 
 const App: React.FC = () => {
   return (
@@ -17,11 +17,8 @@ const App: React.FC = () => {
       <Navigation />
       <Switch>
         <Route exact path='/' component={Main} />
-        <Route
-          path='/social-interaction'
-          component={SocialInteractionContainer}
-        />
-        <Route path='/visited-places' component={VisitedPlacesContainer} />
+        <Route path='/social-interaction' component={SocialInteractionPage} />
+        <Route path='/visited-places' component={VisitedPlacesPage} />
       </Switch>
       <Footer />
     </div>

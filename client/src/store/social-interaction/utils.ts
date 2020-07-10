@@ -7,6 +7,7 @@ import {
   addSIAction,
   failedRequestAction,
   setSIsAction,
+  editSIAction,
 } from './action';
 import SocialInteractionService from '../../services/SocialInteractionService';
 
@@ -16,6 +17,21 @@ export const addSI = (si: SocialInteraction) => {
     SocialInteractionService.add(si)
       .then((response) => {
         dispatch(addSIAction(new SocialInteraction(response.data)));
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(failedRequestAction());
+      });
+  };
+};
+
+export const editSI = (id: string, updatedSI: SocialInteraction) => {
+  return function (dispatch: Dispatch<Action>) {
+    dispatch(startRequestAction());
+    SocialInteractionService.update(id, updatedSI)
+      .then((response) => {
+        console.log(response.data);
+        dispatch(editSIAction(id, response.data));
       })
       .catch((error) => {
         console.log(error);

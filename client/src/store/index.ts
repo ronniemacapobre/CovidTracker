@@ -3,9 +3,11 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { siReducer } from './social-interaction/reducer';
+import { visitedPlacesReducer } from './visited-places/reducer';
 
 const rootReducer = combineReducers({
   socialInteraction: siReducer,
+  visitedPlace: visitedPlacesReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

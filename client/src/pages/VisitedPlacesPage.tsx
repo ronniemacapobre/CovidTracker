@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, FormCheck } from 'react-bootstrap';
+import VisitedPlacesTable from '../components/visited-places/VisitedPlacesTable';
+import { fetchAll } from '../store/visited-places/utils';
+import { connect } from 'react-redux';
 
-const VisitedPlacesContainer: React.FC = () => {
+type StateProps = {
+  fetchAll: () => void;
+};
+
+const VisitedPlacesPage: React.FC<StateProps> = ({ fetchAll }) => {
+  useEffect(() => {
+    fetchAll();
+  }, [fetchAll]);
+
   return (
     <div className='admin__main visited-places'>
       <h1>Visited Places List</h1>
@@ -21,8 +32,13 @@ const VisitedPlacesContainer: React.FC = () => {
           //   onChange={filterRecords}
         />
       </div>
+      <VisitedPlacesTable />
     </div>
   );
 };
 
-export default VisitedPlacesContainer;
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchAll: () => dispatch(fetchAll()),
+});
+
+export default connect(null, mapDispatchToProps)(VisitedPlacesPage);

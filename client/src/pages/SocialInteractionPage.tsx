@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Button, FormCheck } from 'react-bootstrap';
 import { connect, useDispatch } from 'react-redux';
 
-import { AppState } from '../../store';
+import { AppState } from '../store';
 import {
   setSIsAction,
   setFilterAction,
-} from '../../store/social-interaction/action';
+} from '../store/social-interaction/action';
 
-import { fetchAll } from '../../store/social-interaction/utils';
-import SocialInteractionTable from './SocialInteractionTable';
-import { SocialInteraction } from '../../store/social-interaction/types';
-import AddSIModal from './AddSIModal';
-import DeleteSIModal from './DeleteSIModal';
+import { fetchAll } from '../store/social-interaction/utils';
+import SocialInteractionTable from '../components/social-interaction/SocialInteractionTable';
+import { SocialInteraction } from '../store/social-interaction/types';
+import AddSIModal from '../components/social-interaction/AddSIModal';
+import DeleteSIModal from '../components/social-interaction/DeleteSIModal';
 
 type StateProps = {
   loading: boolean;
@@ -22,7 +22,7 @@ type StateProps = {
   deleteSI: (id: string) => void;
 };
 
-const SocialInteractionContainer: React.FC<StateProps> = (props) => {
+const SocialInteractionPage: React.FC<StateProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
@@ -84,4 +84,4 @@ const mapDispatchToProps = (dispatch: any) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SocialInteractionContainer);
+)(SocialInteractionPage);
