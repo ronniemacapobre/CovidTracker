@@ -4,13 +4,29 @@ import { connect } from 'react-redux';
 
 import { VisitedPlace } from '../../store/visited-places/types';
 import { AppState } from '../../store';
+import { fetchAll } from '../../store/visited-places/utils';
+import { useEffect } from 'react';
 
 type StateProps = {
   loading: boolean;
   data: VisitedPlace[];
+  getData: () => void;
 };
 
-const VisitedPlacesTable: React.FC<StateProps> = ({ loading, data }) => {
+type Props = {
+  onDeleteClick: (id: string) => void;
+};
+
+const VisitedPlacesTable: React.FC<StateProps & Props> = ({
+  loading,
+  data,
+  getData,
+  onDeleteClick,
+}) => {
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
   return loading ? (
     <span>Loading data...</span>
   ) : (
@@ -40,7 +56,12 @@ const VisitedPlacesTable: React.FC<StateProps> = ({ loading, data }) => {
                   <Button variant='info' className='mr-2'>
                     Edit
                   </Button>
-                  <Button variant='danger'>Delete</Button>
+                  <Button
+                    variant='danger'
+                    onClick={() => onDeleteClick(visitedPlace.id)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             );
@@ -55,4 +76,8 @@ const mapStateToProps = (state: AppState) => ({
   data: state.visitedPlace.data,
 });
 
-export default connect(mapStateToProps)(VisitedPlacesTable);
+const mapDispatchToProps = (dispatch: any) => ({
+  getData: () => dispatch(fetchAll()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(VisitedPlacesTable);

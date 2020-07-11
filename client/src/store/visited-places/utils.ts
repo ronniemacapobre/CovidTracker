@@ -7,6 +7,7 @@ import {
   addVPAction,
   failedRequestAction,
   setVPsAction,
+  deleteVPAction,
 } from './action';
 import VisitedPlaceService from '../../services/VisitedPlaceService';
 
@@ -24,12 +25,22 @@ export const addVisitedPlace = (visitedPlace: VisitedPlace) => {
   };
 };
 
-export const fetchAll = () => {
+export const fetchAll = (isFiltered: boolean = false) => {
   return function (dispatch: Dispatch<Action>) {
     dispatch(startRequestAction());
     VisitedPlaceService.getAll()
       .then((response) => {
-        var data = response.data.map((si: any) => new VisitedPlace(si));
+        const cutOffDate = new Date();
+        cutOffDate.setDate(cutOffDate.getDate() - 14);
+
+        var data = response.data
+          .map((visitedPlace: any) => new VisitedPlace(visitedPlace))
+          .filter((visitedPlace: VisitedPlace) => {
+            return isFiltered ? visitedPlace.date >= cutOffDate : true;
+          })
+          .sort((a: VisitedPlace, b: VisitedPlace) =>
+            a.date > b.date ? -1 : 1
+          );
         dispatch(setVPsAction(data));
       })
       .catch((error) => {
@@ -39,12 +50,12 @@ export const fetchAll = () => {
   };
 };
 
-export const deleteSI = (id: string) => {
+export const deleteVisitedPlace = (id: string) => {
   return function (dispatch: Dispatch<Action>) {
     dispatch(startRequestAction());
     VisitedPlaceService.remove(id)
       .then((response) => {
-        console.log(response);
+        dispatch(deleteVPAction(id));
       })
       .catch((error) => {
         dispatch(failedRequestAction());

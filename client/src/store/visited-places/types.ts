@@ -16,7 +16,6 @@ export class VisitedPlace {
 
 export interface VPState {
   loading: boolean;
-  isFiltered: boolean;
   idToDelete: string;
   data: VisitedPlace[];
 }
@@ -24,7 +23,6 @@ export interface VPState {
 export const START_REQUEST = 'START_REQUEST_VP';
 export const FAILED_REQUEST = 'FAILED_REQUEST_VP';
 export const SET_ALL = 'SET_VISITED_PLACES';
-export const SET_FILTER = 'SET_FILTER_VP';
 export const ADD_VP = 'ADD_VISITED_PLACE';
 export const EDIT_VP = 'EDIT_VISITED_PLACE';
 export const DELETE_VP = 'DELETE_VISITED_PLACE';
@@ -61,10 +59,6 @@ interface DeleteVPAction {
   payload: string;
 }
 
-interface SetFilterAction {
-  type: typeof SET_FILTER;
-}
-
 interface ToggleDeleteVPAction {
   type: typeof TOGGLE_DELETE_VP;
   payload: string;
@@ -77,5 +71,4 @@ export type VPActionTypes =
   | AddVPAction
   | EditVPAction
   | DeleteVPAction
-  | SetFilterAction
   | ToggleDeleteVPAction;

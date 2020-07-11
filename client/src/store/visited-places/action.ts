@@ -6,7 +6,6 @@ import {
   ADD_VP,
   EDIT_VP,
   DELETE_VP,
-  SET_FILTER,
   TOGGLE_DELETE_VP,
 } from './types';
 import { START_REQUEST } from '../visited-places/types';
@@ -53,10 +52,6 @@ export function deleteVPAction(id: string): VPActionTypes {
     type: DELETE_VP,
     payload: id,
   };
-}
-
-export function setFilterAction(): VPActionTypes {
-  return { type: SET_FILTER };
 }
 
 export function toggleDeleteSIAction(id: string): VPActionTypes {

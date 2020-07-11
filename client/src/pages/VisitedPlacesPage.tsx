@@ -1,17 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { Button, FormCheck } from 'react-bootstrap';
+
+import { AppState } from '../store';
+import { fetchAll, deleteVisitedPlace } from '../store/visited-places/utils';
 import VisitedPlacesTable from '../components/visited-places/VisitedPlacesTable';
-import { fetchAll } from '../store/visited-places/utils';
-import { connect } from 'react-redux';
+import AddVisitedPlaceModal from '../components/visited-places/AddVisitedPlaceModal';
+import DeleteModal from '../components/shared/DeleteModal';
 
 type StateProps = {
-  fetchAll: () => void;
+  getData: (isFiltered: boolean) => void;
+  deleteVisitedPlace: (id: string) => void;
 };
 
-const VisitedPlacesPage: React.FC<StateProps> = ({ fetchAll }) => {
-  useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+const VisitedPlacesPage: React.FC<StateProps> = ({
+  getData,
+  deleteVisitedPlace,
+}) => {
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [visitedPlaceIdToDelete, setVisitedPlaceIdToDelete] = useState('');
+
+  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.currentTarget;
+    setIsFiltered(checked);
+    getData(checked);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setVisitedPlaceIdToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    setVisitedPlaceIdToDelete(visitedPlaceIdToDelete);
+    setShowDeleteModal(false);
+    deleteVisitedPlace(visitedPlaceIdToDelete);
+  };
+
+  const cancelDelete = () => {
+    setVisitedPlaceIdToDelete('');
+    setShowDeleteModal(false);
+  };
 
   return (
     <div className='admin__main visited-places'>
@@ -21,24 +52,39 @@ const VisitedPlacesPage: React.FC<StateProps> = ({ fetchAll }) => {
           <Button
             variant='success'
             type='button'
-            // onClick={() => setShowModal(true)}
+            onClick={() => setShowModal(true)}
           >
             Add Visited Place
           </Button>
         </div>
         <FormCheck
           label='Display records within last 14 days'
-          //   defaultChecked={props.isFiltered}
-          //   onChange={filterRecords}
+          defaultChecked={isFiltered}
+          onChange={handleCheckBoxChange}
         />
       </div>
-      <VisitedPlacesTable />
+      <VisitedPlacesTable onDeleteClick={handleDeleteClick} />
+      <AddVisitedPlaceModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        isFiltered={isFiltered}
+      />
+      <DeleteModal
+        toggle={showDeleteModal}
+        title='Delete Confirmation'
+        message='Are you sure you want to delete this visited place?'
+        confirmAction={confirmDelete}
+        cancelAction={cancelDelete}
+      />
     </div>
   );
 };
 
+const mapStateToProps = (state: AppState) => ({});
+
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchAll: () => dispatch(fetchAll()),
+  getData: (isFiltered: boolean) => dispatch(fetchAll(isFiltered)),
+  deleteVisitedPlace: (id: string) => dispatch(deleteVisitedPlace(id)),
 });
 
-export default connect(null, mapDispatchToProps)(VisitedPlacesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(VisitedPlacesPage);
