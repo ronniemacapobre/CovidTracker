@@ -25,6 +25,31 @@ export const addVisitedPlace = (visitedPlace: VisitedPlace) => {
   };
 };
 
+export const fetchChartingData = () => {
+  return function (dispatch: Dispatch<Action>) {
+    dispatch(startRequestAction());
+    VisitedPlaceService.getAll()
+      .then((response) => {
+        const cutOffDate = new Date();
+        cutOffDate.setDate(cutOffDate.getDate() - 7);
+
+        var data = response.data
+          .map((visitedPlace: any) => new VisitedPlace(visitedPlace))
+          .filter((visitedPlace: VisitedPlace) => {
+            return visitedPlace.date >= cutOffDate;
+          })
+          .sort((a: VisitedPlace, b: VisitedPlace) =>
+            a.date > b.date ? 1 : -1
+          );
+        dispatch(setVPsAction(data));
+      })
+      .catch((error) => {
+        dispatch(failedRequestAction());
+        console.log(error);
+      });
+  };
+};
+
 export const fetchAll = (isFiltered: boolean = false) => {
   return function (dispatch: Dispatch<Action>) {
     dispatch(startRequestAction());
