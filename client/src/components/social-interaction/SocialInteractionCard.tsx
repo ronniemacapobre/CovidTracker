@@ -1,23 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchChartingData } from '../../store/visited-places/utils';
-import { useEffect } from 'react';
+import { fetchChartingData } from '../../store/social-interaction/utils';
 import { AppState } from '../../store';
-import { VisitedPlace } from '../../store/visited-places/types';
+import { SocialInteraction } from '../../store/social-interaction/types';
 import CardWithColumnChart from '../shared/CardWithColumnChart';
 
 type StateProps = {
   getData: () => void;
-  data: VisitedPlace[];
+  data: SocialInteraction[];
 };
 
-const VisitedPlacesCard: React.FC<StateProps> = (props) => {
+const SocialInteractionCard: React.FC<StateProps> = (props) => {
   useEffect(() => {
     props.getData();
   }, [props.getData]);
 
-  const formatDataForChart = (data: VisitedPlace[]): any => {
+  const formatDataForChart = (data: SocialInteraction[]): any => {
     let chartDataMap = new Map();
 
     for (const { date } of data) {
@@ -36,9 +35,9 @@ const VisitedPlacesCard: React.FC<StateProps> = (props) => {
     <React.Fragment>
       {props.data.length > 0 && (
         <CardWithColumnChart
-          title='Recent Visited Places'
-          route='/visited-places'
-          vAxisTitle='Number of visited places'
+          title='Recent Social Interactions'
+          route='/social-interaction'
+          vAxisTitle='Number of social interactions'
           hAxistTitle='Last 7 Days'
           data={formatDataForChart(props.data)}
         />
@@ -48,11 +47,14 @@ const VisitedPlacesCard: React.FC<StateProps> = (props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  data: state.visitedPlace.data,
+  data: state.socialInteraction.data,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getData: () => dispatch(fetchChartingData()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(VisitedPlacesCard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SocialInteractionCard);

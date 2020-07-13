@@ -22,9 +22,20 @@ const CardWithColumnChart: React.FC<Props> = (props) => {
     legend: { position: 'none' },
   };
 
+  const cardTitleStype = {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    display: 'flex',
+  };
+
   return (
     <div>
-      <h3>{props.title}</h3>
+      <div style={cardTitleStype}>
+        <h3>{props.title}</h3>
+        <a className='btn btn-success' href={props.route}>
+          View All
+        </a>
+      </div>
       <Chart
         chartType='ColumnChart'
         width='100%'

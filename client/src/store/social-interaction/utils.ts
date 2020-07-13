@@ -55,6 +55,32 @@ export const fetchAll = () => {
   };
 };
 
+export const fetchChartingData = () => {
+  return function (dispatch: Dispatch<Action>) {
+    dispatch(startRequestAction());
+    SocialInteractionService.getAll()
+      .then((response) => {
+        const cutOffDate = new Date();
+        cutOffDate.setDate(cutOffDate.getDate() - 7);
+
+        var data = response.data
+          .map(
+            (socialInteraction: any) => new SocialInteraction(socialInteraction)
+          )
+          .filter((socialInteraction: SocialInteraction) => {
+            return socialInteraction.date >= cutOffDate;
+          })
+          .sort((a: SocialInteraction, b: SocialInteraction) =>
+            a.date > b.date ? 1 : -1
+          );
+        dispatch(setSIsAction(data));
+      })
+      .catch((error) => {
+        dispatch(failedRequestAction());
+        console.log(error);
+      });
+  };
+};
 export const deleteSI = (id: string) => {
   return function (dispatch: Dispatch<Action>) {
     dispatch(startRequestAction());
