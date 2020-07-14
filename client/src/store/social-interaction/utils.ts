@@ -68,7 +68,10 @@ export const fetchChartingData = () => {
             (socialInteraction: any) => new SocialInteraction(socialInteraction)
           )
           .filter((socialInteraction: SocialInteraction) => {
-            return socialInteraction.date >= cutOffDate;
+            return (
+              socialInteraction.date >= cutOffDate &&
+              socialInteraction.date <= new Date()
+            );
           })
           .sort((a: SocialInteraction, b: SocialInteraction) =>
             a.date > b.date ? 1 : -1

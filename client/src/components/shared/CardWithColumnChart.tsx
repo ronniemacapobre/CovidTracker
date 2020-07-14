@@ -6,7 +6,7 @@ type Props = {
   route: string;
   vAxisTitle: string;
   hAxistTitle: string;
-  data: [];
+  data: any[];
 };
 
 const CardWithColumnChart: React.FC<Props> = (props) => {
@@ -28,6 +28,21 @@ const CardWithColumnChart: React.FC<Props> = (props) => {
     display: 'flex',
   };
 
+  const formatDataForChart = (data: any[]): any => {
+    let chartDataMap = new Map();
+
+    for (const item of data) {
+      const shortDate = item.date.toLocaleDateString();
+
+      chartDataMap.set(
+        shortDate,
+        chartDataMap.has(shortDate) ? chartDataMap.get(shortDate) + 1 : 1
+      );
+    }
+
+    return [['Last 7 Days', ''], ...Array.from(chartDataMap)];
+  };
+
   return (
     <div>
       <div style={cardTitleStype}>
@@ -40,8 +55,9 @@ const CardWithColumnChart: React.FC<Props> = (props) => {
         chartType='ColumnChart'
         width='100%'
         height='400px'
+        loader={<div>Loading Chart...</div>}
         options={options}
-        data={props.data}
+        data={formatDataForChart(props.data)}
       />
       <a href={props.route}>View All</a>
     </div>

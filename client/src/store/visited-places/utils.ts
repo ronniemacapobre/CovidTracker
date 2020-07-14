@@ -36,7 +36,9 @@ export const fetchChartingData = () => {
         var data = response.data
           .map((visitedPlace: any) => new VisitedPlace(visitedPlace))
           .filter((visitedPlace: VisitedPlace) => {
-            return visitedPlace.date >= cutOffDate;
+            return (
+              visitedPlace.date >= cutOffDate && visitedPlace.date <= new Date()
+            );
           })
           .sort((a: VisitedPlace, b: VisitedPlace) =>
             a.date > b.date ? 1 : -1

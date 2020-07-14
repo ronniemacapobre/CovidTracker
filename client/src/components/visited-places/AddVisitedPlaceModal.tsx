@@ -75,6 +75,7 @@ const AddVisitedPlaceModal: React.FC<StateProps & Props> = ({
               required
               name='date'
               type='date'
+              max={new Date().toISOString().substr(0, 10)}
               defaultValue={new Date().toISOString().substr(0, 10)}
               onChange={handleInputChange}
             />
