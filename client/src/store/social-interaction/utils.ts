@@ -40,42 +40,53 @@ export const editSI = (id: string, updatedSI: SocialInteraction) => {
   };
 };
 
-export const fetchAll = () => {
-  return function (dispatch: Dispatch<Action>) {
-    dispatch(startRequestAction());
-    SocialInteractionService.getAll()
-      .then((response) => {
-        var data = response.data.map((si: any) => new SocialInteraction(si));
-        dispatch(setSIsAction(data));
-      })
-      .catch((error) => {
-        dispatch(failedRequestAction());
-        console.log(error);
-      });
-  };
-};
+// export const fetchAll = () => {
+//   return function (dispatch: Dispatch<Action>) {
+//     dispatch(startRequestAction());
+//     SocialInteractionService.getAll()
+//       .then((response) => {
+//         var data = response.data.map((si: any) => new SocialInteraction(si));
+//         dispatch(setSIsAction(data));
+//       })
+//       .catch((error) => {
+//         dispatch(failedRequestAction());
+//         console.log(error);
+//       });
+//   };
+// };
 
-export const fetchChartingData = () => {
+export const fetchAll = (cutOffDays?: number, isDateAsc: boolean = false) => {
   return function (dispatch: Dispatch<Action>) {
     dispatch(startRequestAction());
     SocialInteractionService.getAll()
       .then((response) => {
+        // Check if there is a cutoff date
         const cutOffDate = new Date();
-        cutOffDate.setDate(cutOffDate.getDate() - 7);
+        if (cutOffDays) {
+          cutOffDate.setDate(cutOffDate.getDate() - cutOffDays);
+        }
 
         var data = response.data
           .map(
             (socialInteraction: any) => new SocialInteraction(socialInteraction)
           )
           .filter((socialInteraction: SocialInteraction) => {
+            // Return all if there's no cutoff
+            if (!cutOffDays) return true;
+
+            // Include data within the cutoff date range
             return (
               socialInteraction.date >= cutOffDate &&
               socialInteraction.date <= new Date()
             );
           })
-          .sort((a: SocialInteraction, b: SocialInteraction) =>
-            a.date > b.date ? 1 : -1
-          );
+          .sort((a: SocialInteraction, b: SocialInteraction) => {
+            if (isDateAsc) {
+              return a.date > b.date ? 1 : -1;
+            } else {
+              return a.date > b.date ? -1 : 1;
+            }
+          });
         dispatch(setSIsAction(data));
       })
       .catch((error) => {

@@ -120,7 +120,8 @@ const AddVisitedPlaceModal: React.FC<StateProps & Props> = ({
 };
 
 const mapDisptachToProps = (dispatch: any) => ({
-  getData: (isFiltered: boolean) => dispatch(fetchAll(isFiltered)),
+  getData: (isFiltered: boolean) =>
+    dispatch(fetchAll(isFiltered ? 14 : undefined)),
   addVisitedPlace: (visitedPlace: VisitedPlace) =>
     dispatch(addVisitedPlace(visitedPlace)),
 });

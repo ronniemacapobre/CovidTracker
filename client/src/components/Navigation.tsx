@@ -12,7 +12,7 @@ const Navigation: React.FC = () => {
         </li>
         <li className='menu__item'>
           <a className='menu__link' href='visited-places'>
-            <i className='fas fa-map-pin mr-2'></i>
+            <i className='fas fa-map-pin mr-3'></i>
             Add Place Exposure
           </a>
         </li>

@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../store';
-import { fetchChartingData as getVisitedPlaces } from '../store/visited-places/utils';
-import { fetchChartingData as getSocialInteractions } from '../store/social-interaction/utils';
+import { fetchAll as getVisitedPlaces } from '../store/visited-places/utils';
+import { fetchAll as getSocialInteractions } from '../store/social-interaction/utils';
 import { SocialInteraction } from '../store/social-interaction/types';
 import { VisitedPlace } from '../store/visited-places/types';
 import CardWithColumnChart from './shared/CardWithColumnChart';
@@ -66,8 +66,8 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getVisitedPlaces: () => dispatch(getVisitedPlaces()),
-  getSocialInteractions: () => dispatch(getSocialInteractions()),
+  getVisitedPlaces: () => dispatch(getVisitedPlaces(7, true)),
+  getSocialInteractions: () => dispatch(getSocialInteractions(7, true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

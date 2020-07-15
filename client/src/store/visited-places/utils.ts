@@ -25,49 +25,35 @@ export const addVisitedPlace = (visitedPlace: VisitedPlace) => {
   };
 };
 
-export const fetchChartingData = () => {
+export const fetchAll = (cutOffDays?: number, isDateAsc: boolean = false) => {
   return function (dispatch: Dispatch<Action>) {
     dispatch(startRequestAction());
     VisitedPlaceService.getAll()
       .then((response) => {
+        // Check if there is a cutoff date
         const cutOffDate = new Date();
-        cutOffDate.setDate(cutOffDate.getDate() - 7);
+        if (cutOffDays) {
+          cutOffDate.setDate(cutOffDate.getDate() - cutOffDays);
+        }
 
         var data = response.data
           .map((visitedPlace: any) => new VisitedPlace(visitedPlace))
           .filter((visitedPlace: VisitedPlace) => {
+            // Return all if there's no cutoff
+            if (!cutOffDays) return true;
+
+            // Include data within the cutoff date range
             return (
               visitedPlace.date >= cutOffDate && visitedPlace.date <= new Date()
             );
           })
-          .sort((a: VisitedPlace, b: VisitedPlace) =>
-            a.date > b.date ? 1 : -1
-          );
-        dispatch(setVPsAction(data));
-      })
-      .catch((error) => {
-        dispatch(failedRequestAction());
-        console.log(error);
-      });
-  };
-};
-
-export const fetchAll = (isFiltered: boolean = false) => {
-  return function (dispatch: Dispatch<Action>) {
-    dispatch(startRequestAction());
-    VisitedPlaceService.getAll()
-      .then((response) => {
-        const cutOffDate = new Date();
-        cutOffDate.setDate(cutOffDate.getDate() - 14);
-
-        var data = response.data
-          .map((visitedPlace: any) => new VisitedPlace(visitedPlace))
-          .filter((visitedPlace: VisitedPlace) => {
-            return isFiltered ? visitedPlace.date >= cutOffDate : true;
-          })
-          .sort((a: VisitedPlace, b: VisitedPlace) =>
-            a.date > b.date ? -1 : 1
-          );
+          .sort((a: VisitedPlace, b: VisitedPlace) => {
+            if (isDateAsc) {
+              return a.date > b.date ? 1 : -1;
+            } else {
+              return a.date > b.date ? -1 : 1;
+            }
+          });
         dispatch(setVPsAction(data));
       })
       .catch((error) => {

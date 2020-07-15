@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { Button, FormCheck } from 'react-bootstrap';
 
 import { AppState } from '../store';
@@ -9,7 +9,7 @@ import AddVisitedPlaceModal from '../components/visited-places/AddVisitedPlaceMo
 import DeleteModal from '../components/shared/DeleteModal';
 
 type StateProps = {
-  getData: (isFiltered: boolean) => void;
+  getData: (cutOffDays?: number) => void;
   deleteVisitedPlace: (id: string) => void;
 };
 
@@ -25,7 +25,7 @@ const VisitedPlacesPage: React.FC<StateProps> = ({
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.currentTarget;
     setIsFiltered(checked);
-    getData(checked);
+    getData(checked ? 14 : undefined);
   };
 
   const handleDeleteClick = (id: string) => {
@@ -83,7 +83,7 @@ const VisitedPlacesPage: React.FC<StateProps> = ({
 const mapStateToProps = (state: AppState) => ({});
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getData: (isFiltered: boolean) => dispatch(fetchAll(isFiltered)),
+  getData: (cutoffDays?: number) => dispatch(fetchAll(cutoffDays)),
   deleteVisitedPlace: (id: string) => dispatch(deleteVisitedPlace(id)),
 });
 
