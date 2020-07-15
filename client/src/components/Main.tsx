@@ -8,6 +8,7 @@ import { SocialInteraction } from '../store/social-interaction/types';
 import { VisitedPlace } from '../store/visited-places/types';
 import CardWithColumnChart from './shared/CardWithColumnChart';
 import AlertNotifications from './AlertNotifications';
+import AddVisitedPlaceModal from './visited-places/AddVisitedPlaceModal';
 
 type StateProps = {
   getVisitedPlaces: () => void;
@@ -56,6 +57,11 @@ const Main: React.FC<StateProps> = (props) => {
           </div>
         </div>
       </div>
+      <AddVisitedPlaceModal
+        show={false}
+        onHide={() => console.log()}
+        isFiltered={false}
+      />
     </main>
   );
 };

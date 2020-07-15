@@ -18,7 +18,7 @@ type StateProps = {
   loading: boolean;
   data: SocialInteraction[];
   isFiltered: boolean;
-  fetchAll: () => void;
+  fetchAll: (cutoffDays?: number) => void;
   deleteSI: (id: string) => void;
 };
 
@@ -27,7 +27,7 @@ const SocialInteractionPage: React.FC<StateProps> = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    props.fetchAll();
+    props.fetchAll(props.isFiltered ? 14 : undefined);
   }, [fetchAll]);
 
   const filterRecords = () => {
@@ -36,7 +36,7 @@ const SocialInteractionPage: React.FC<StateProps> = (props) => {
     if (!props.isFiltered) {
       dispatch(setSIsAction(props.data));
     } else {
-      props.fetchAll();
+      props.fetchAll(props.isFiltered ? undefined : 14);
     }
   };
 
@@ -78,7 +78,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchAll: () => dispatch(fetchAll()),
+  fetchAll: (cutoffDays?: number) => dispatch(fetchAll(cutoffDays)),
 });
 
 export default connect(
