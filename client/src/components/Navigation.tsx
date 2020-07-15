@@ -6,12 +6,20 @@ const Navigation: React.FC = () => {
       <ul className='menu'>
         <li className='menu__item'>
           <a className='menu__link' href='social-interaction'>
-            Social Interaction
+            <i className='fas fa-people-arrows mr-2'></i>
+            Add Social Interaction
           </a>
         </li>
         <li className='menu__item'>
           <a className='menu__link' href='visited-places'>
-            Place Exposure
+            <i className='fas fa-map-pin mr-2'></i>
+            Add Place Exposure
+          </a>
+        </li>
+        <li className='menu__item'>
+          <a className='menu__link' href='/'>
+            <i className='fas fa-eraser mr-2'></i>
+            Reset Data
           </a>
         </li>
       </ul>

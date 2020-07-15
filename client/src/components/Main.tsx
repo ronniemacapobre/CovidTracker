@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import VisitedPlacesCard from './visited-places/VisitedPlacesCard';
-import SocialInteractionCard from './social-interaction/SocialInteractionCard';
 import { AppState } from '../store';
 import { fetchChartingData as getVisitedPlaces } from '../store/visited-places/utils';
 import { fetchChartingData as getSocialInteractions } from '../store/social-interaction/utils';
 import { SocialInteraction } from '../store/social-interaction/types';
 import { VisitedPlace } from '../store/visited-places/types';
 import CardWithColumnChart from './shared/CardWithColumnChart';
+import AlertNotifications from './AlertNotifications';
 
 type StateProps = {
   getVisitedPlaces: () => void;
@@ -25,6 +24,10 @@ const Main: React.FC<StateProps> = (props) => {
 
   return (
     <main className='admin__main'>
+      <div className='admin__actions'></div>
+      <div className='admin__notifications'>
+        <AlertNotifications />
+      </div>
       <div className='dashboard'>
         <div className='dashboard__item'>
           <div className='card'>

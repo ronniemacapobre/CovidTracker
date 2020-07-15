@@ -54,7 +54,7 @@ const VisitedPlacesPage: React.FC<StateProps> = ({
             type='button'
             onClick={() => setShowModal(true)}
           >
-            Add Visited Place
+            <i className='fas fa-plus'></i> Add Visited Place
           </Button>
         </div>
         <FormCheck

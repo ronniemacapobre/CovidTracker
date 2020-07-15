@@ -108,10 +108,10 @@ const AddSIModal: React.FC<Props & StateProps> = (props) => {
         <Form.Group as={Row}>
           <Col sm={{ span: 10, offset: 2 }}>
             <Button className='mr-3' variant='primary' type='submit'>
-              Save
+              <i className='far fa-save'></i> Save
             </Button>
             <Button variant='secondary' onClick={props.onHide}>
-              Cancel
+              <i className='fas fa-ban'></i> Cancel
             </Button>
           </Col>
         </Form.Group>

@@ -50,7 +50,7 @@ const SocialInteractionPage: React.FC<StateProps> = (props) => {
             type='button'
             onClick={() => setShowModal(true)}
           >
-            Add Social Interaction
+            <i className='fas fa-plus'></i> Add Social Interaction
           </Button>
         </div>
         <FormCheck

@@ -33,11 +33,21 @@ const VisitedPlacesTable: React.FC<StateProps & Props> = ({
     <Table bordered responsive size='lg'>
       <thead>
         <tr>
-          <th>Place</th>
-          <th>Date</th>
-          <th>Hours</th>
-          <th>Crowded?</th>
-          <th>Actions</th>
+          <th>
+            <i className='fas fa-map-pin'></i> Place
+          </th>
+          <th>
+            <i className='far fa-calendar-alt'></i> Date
+          </th>
+          <th style={{ width: '100px' }}>
+            <i className='fas fa-hourglass-half'></i> Hours
+          </th>
+          <th style={{ width: '200px' }}>
+            <i className='fas fa-users'></i> Crowded?
+          </th>
+          <th style={{ width: '220px' }} className='text-center'>
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -54,13 +64,13 @@ const VisitedPlacesTable: React.FC<StateProps & Props> = ({
                 <td>{visitedPlace.isCrowded ? 'Yes' : 'No'}</td>
                 <td>
                   <Button variant='info' className='mr-2'>
-                    Edit
+                    <i className='far fa-edit'></i> Edit
                   </Button>
                   <Button
                     variant='danger'
                     onClick={() => onDeleteClick(visitedPlace.id)}
                   >
-                    Delete
+                    <i className='far fa-trash-alt'></i> Delete
                   </Button>
                 </td>
               </tr>

@@ -77,10 +77,10 @@ const SocialInteractionTableRowEditMode: React.FC<Props & StateProps> = ({
           type='button'
           onClick={() => handleEdit(socialInteraction)}
         >
-          Update
+          <i className='far fa-save'></i> Update
         </Button>
         <Button variant='secondary' onClick={onCancel}>
-          Cancel
+          <i className='fas fa-ban'></i> Cancel
         </Button>
       </td>
     </tr>

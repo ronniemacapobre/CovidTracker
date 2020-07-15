@@ -12,11 +12,21 @@ const SocialInteractionTable: React.FC<Props> = (props) => {
     <Table bordered responsive size='lg'>
       <thead>
         <tr>
-          <th>Person</th>
-          <th>Date</th>
-          <th>Hours</th>
-          <th>Is Practicing SD?</th>
-          <th>Actions</th>
+          <th>
+            <i className='far fa-user'></i> Person
+          </th>
+          <th>
+            <i className='far fa-calendar-alt'></i> Date
+          </th>
+          <th style={{ width: '100px' }}>
+            <i className='fas fa-hourglass-half'></i> Hours
+          </th>
+          <th style={{ width: '200px' }}>
+            <i className='fas fa-people-arrows'></i> Practicing SD?
+          </th>
+          <th style={{ width: '220px' }} className='text-center'>
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody>

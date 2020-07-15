@@ -22,10 +22,10 @@ const SocialInteractionTableRowViewMode: React.FC<Props> = ({
       <td>{data.isSocialDistancing ? 'Yes' : 'No'}</td>
       <td>
         <Button variant='info' className='mr-2' onClick={() => onEdit(data)}>
-          Edit
+          <i className='far fa-edit'></i> Edit
         </Button>
         <Button variant='danger' onClick={() => onDelete(data.id)}>
-          Delete
+          <i className='far fa-trash-alt'></i> Delete
         </Button>
       </td>
     </tr>
